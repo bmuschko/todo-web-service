@@ -24,9 +24,9 @@ pipeline {
         }
         stage('Push Image') {
             environment {
-                DOCKER_USERNAME = credentials('DOCKER_USERNAME')
+                DOCKER_USERNAME = 'bmuschko'
                 DOCKER_PASSWORD = credentials('DOCKER_PASSWORD')
-                DOCKER_EMAIL = credentials('DOCKER_EMAIL')
+                DOCKER_EMAIL = 'benjamin.muschko@gmail.com'
             }
             steps {
                 gradlew('dockerPushImage')
