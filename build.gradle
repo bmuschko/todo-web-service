@@ -31,7 +31,7 @@ dependencies {
 
 docker {
     registryCredentials {
-        username = getConfigurationProperty('DOCKER_USERNAME', 'dockerHubEmail')
+        username = getConfigurationProperty('DOCKER_USERNAME', 'dockerHubUsername')
         password = getConfigurationProperty('DOCKER_PASSWORD', 'dockerHubPassword')
         email = getConfigurationProperty('DOCKER_EMAIL', 'dockerHubEmail')
     }
