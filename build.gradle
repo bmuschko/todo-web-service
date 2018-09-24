@@ -31,9 +31,12 @@ dependencies {
 
 docker {
     registryCredentials {
-        username = getConfigurationProperty('DOCKER_USERNAME', 'docker.username')
-        password = getConfigurationProperty('DOCKER_PASSWORD', 'docker.password')
-        email = getConfigurationProperty('DOCKER_EMAIL', 'docker.email')
+        username = getConfigurationProperty('DOCKER_USERNAME', 'dockerHubEmail')
+        password = getConfigurationProperty('DOCKER_PASSWORD', 'dockerHubPassword')
+        email = getConfigurationProperty('DOCKER_EMAIL', 'dockerHubEmail')
+    }
+    springBootApplication {
+        tag = "$docker.registryCredentials.username/todo-webservice"
     }
 }
 
