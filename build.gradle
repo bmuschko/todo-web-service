@@ -37,7 +37,7 @@ docker {
         email = getConfigurationProperty('DOCKER_EMAIL', 'dockerHubEmail')
     }
     springBootApplication {
-        tag = "$docker.registryCredentials.username/todo-webservice"
+        tag = "$docker.registryCredentials.username/todo-web-service"
     }
 }
 
