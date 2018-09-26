@@ -30,7 +30,7 @@ To use the production profile, pass in the `SPRING_PROFILES_ACTIVE` environment 
 $ docker run -e "SPRING_PROFILES_ACTIVE=prod" -p 8080:8080 -t bmuschko/todo-web-service
 ----
 
-== Usage the API
+== Using the API
 
 Once the service is up and running, you can call the exposed CRUD endpoints.
 
@@ -100,5 +100,3 @@ Example command:
 ----
 curl -X PUT -H "Content-Type:application/json" -d '{ "name" : "Pay bills", "completed" : true }' localhost:9090/todos/2
 ----
-
-== Usage
