@@ -10,6 +10,12 @@ Execute the task `bootRun` with the Gradle Wrapper command to bring up the servi
 ./gradlew bootRun --args='--server.port=9090'
 ----
 
+You can activate a profile by passing in the relevant environment. At the moment only `prod` is supported. The default profile will use a H2 database.
+
+----
+./gradlew bootRun --args='--spring.profiles.active=prod'
+----
+
 == Usage
 
 Once the service is up and running, you can call the exposed CRUD endpoints.
