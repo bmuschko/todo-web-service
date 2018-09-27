@@ -39,7 +39,7 @@ Once the service is up and running, you can call the exposed CRUD endpoints.
 Example command:
 
 ----
-curl -X GET localhost:8080/todos
+$ curl -X GET localhost:8080/todos
 ----
 
 Example response:
@@ -64,7 +64,7 @@ Example response:
 Example command:
 
 ----
-curl -X GET localhost:8080/todos/2
+$ curl -X GET localhost:8080/todos/2
 ----
 
 Example response:
@@ -82,7 +82,7 @@ Example response:
 Example command:
 
 ----
-curl -X POST -H "Content-Type:application/json" -d '{ "name" : "Buy milk", "completed" : false }' localhost:8080/todos
+$ curl -X POST -H "Content-Type:application/json" -d '{ "name" : "Buy milk", "completed" : false }' localhost:8080/todos
 ----
 
 === Deleting an existing item
@@ -90,7 +90,7 @@ curl -X POST -H "Content-Type:application/json" -d '{ "name" : "Buy milk", "comp
 Example command:
 
 ----
-curl -X DELETE localhost:8080/todos/2
+$ curl -X DELETE localhost:8080/todos/2
 ----
 
 === Updating an existing item
@@ -98,5 +98,5 @@ curl -X DELETE localhost:8080/todos/2
 Example command:
 
 ----
-curl -X PUT -H "Content-Type:application/json" -d '{ "name" : "Pay bills", "completed" : true }' localhost:8080/todos/2
+$ curl -X PUT -H "Content-Type:application/json" -d '{ "name" : "Pay bills", "completed" : true }' localhost:8080/todos/2
 ----
