@@ -24,9 +24,9 @@ pipeline {
         }
         stage('Build & Push Image') {
             environment {
-                DOCKER_USERNAME = env.DOCKER_USERNAME
+                DOCKER_USERNAME = ${env.DOCKER_USERNAME}
                 DOCKER_PASSWORD = credentials('DOCKER_PASSWORD')
-                DOCKER_EMAIL = env.DOCKER_EMAIL
+                DOCKER_EMAIL = ${env.DOCKER_EMAIL}
             }
             steps {
                 gradlew('dockerPushImage')
