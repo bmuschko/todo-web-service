@@ -1,0 +1,14 @@
+dependencies {
+    def junitJupiterVersion = '5.3.1'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
+}
+
+configurations.all {
+    exclude group: 'junit', module: 'junit'
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+}
