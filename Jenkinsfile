@@ -22,7 +22,7 @@ pipeline {
                 stash includes: '**/build/libs/*.jar', name: 'app'
             }
         }
-        stage('Push Image') {
+        stage('Build & Push Image') {
             environment {
                 DOCKER_USERNAME = 'bmuschko'
                 DOCKER_PASSWORD = credentials('DOCKER_PASSWORD')
