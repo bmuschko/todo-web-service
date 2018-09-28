@@ -47,7 +47,7 @@ public class ToDoController {
         ToDoItem savedToDoItem = toDoRepository.save(toDoItem);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(savedToDoItem.getId()).toUri();
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).body(savedToDoItem);
     }
 
     @PutMapping("/todos/{id}")
