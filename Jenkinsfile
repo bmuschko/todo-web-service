@@ -10,10 +10,20 @@ pipeline {
             steps {
                 gradlew('clean', 'test')
             }
+            post {
+                always {
+                    junit '**/build/test-results/test/TEST-*.xml'
+                }
+            }
         }
         stage('Integration Tests') {
             steps {
                 gradlew('integrationTest')
+            }
+            post {
+                always {
+                    junit '**/build/test-results/integrationTest/TEST-*.xml'
+                }
             }
         }
         stage('Assemble') {
