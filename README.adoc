@@ -10,10 +10,12 @@ Execute the task `bootRun` with the Gradle Wrapper command to bring up the servi
 $ ./gradlew bootRun --args='--server.port=9090'
 ----
 
-You can activate a profile by passing in the relevant environment. At the moment only `prod` is supported. The default profile will use a H2 database.
+You can activate a profile by passing in the relevant environment. At the moment `dev` and `prod` is supported. The default profile uses a H2 database. The `dev` profile assumes the usage of a PostgreSQL database for development purposes. The `prod` profile is used for production environments.
+
+The following example uses the development profile.
 
 ----
-$ ./gradlew bootRun --args='--spring.profiles.active=prod'
+$ ./gradlew bootRun --args='--spring.profiles.active=dev'
 ----
 
 == Running the service in Docker container
