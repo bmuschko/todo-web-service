@@ -16,6 +16,7 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'com.bmuschko.docker-spring-boot-application'
 apply from: 'gradle/test-setup.gradle'
 apply from: 'gradle/integration-test.gradle'
+apply from: 'gradle/functional-test.gradle'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -52,4 +53,39 @@ docker {
 
 String getConfigurationProperty(String envVar, String sysProp) {
     System.getenv(envVar) ?: project.findProperty(sysProp)
+}
+
+dockerCreateDockerfile {
+    instruction 'HEALTHCHECK CMD wget --quiet --tries=1 --spider http://localhost:8080/actuator/health || exit 1'
+}
+
+import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
+import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
+import com.bmuschko.gradle.docker.tasks.container.DockerStopContainer
+import com.bmuschko.gradle.docker.tasks.container.extras.DockerWaitHealthyContainer
+
+task createContainer(type: DockerCreateContainer) {
+    dependsOn dockerBuildImage
+    targetImageId { dockerBuildImage.getImageId() }
+    portBindings = ['8080:8080']
+}
+
+task startContainer(type: DockerStartContainer) {
+    dependsOn createContainer
+    targetContainerId { createContainer.getContainerId() }
+}
+
+task startAndWaitOnHealthyContainer(type: DockerWaitHealthyContainer) {
+    dependsOn startContainer
+    timeout = 60
+    targetContainerId { createContainer.getContainerId() }
+}
+
+task stopContainer(type: DockerStopContainer) {
+    targetContainerId { createContainer.getContainerId() }
+}
+
+functionalTest {
+    dependsOn startAndWaitOnHealthyContainer
+    finalizedBy stopContainer
 }

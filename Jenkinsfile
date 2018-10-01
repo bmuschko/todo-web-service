@@ -26,13 +26,28 @@ pipeline {
                 }
             }
         }
-        stage('Assemble') {
+        stage('Assembly') {
             steps {
                 gradlew('assemble')
                 stash includes: '**/build/libs/*.jar', name: 'app'
             }
         }
-        stage('Build & Push Image') {
+        stage('Build Image') {
+            steps {
+                gradlew('dockerBuildImage')
+            }
+        }
+        stage('Functional Tests') {
+            steps {
+                gradlew('functionalTest')
+            }
+            post {
+                always {
+                    junit '**/build/test-results/functionalTest/TEST-*.xml'
+                }
+            }
+        }
+        stage('Push Image') {
             environment {
                 DOCKER_USERNAME = "${env.DOCKER_USERNAME}"
                 DOCKER_PASSWORD = credentials('DOCKER_PASSWORD')
