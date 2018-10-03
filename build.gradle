@@ -62,6 +62,7 @@ dockerCreateDockerfile {
 import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
 import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
 import com.bmuschko.gradle.docker.tasks.container.DockerStopContainer
+import com.bmuschko.gradle.docker.tasks.container.DockerRemoveContainer
 import com.bmuschko.gradle.docker.tasks.container.extras.DockerWaitHealthyContainer
 
 task createContainer(type: DockerCreateContainer) {
@@ -85,7 +86,12 @@ task stopContainer(type: DockerStopContainer) {
     targetContainerId { createContainer.getContainerId() }
 }
 
+task removeContainer(type: DockerRemoveContainer) {
+    dependsOn stopContainer
+    targetContainerId { createContainer.getContainerId() }
+}
+
 functionalTest {
     dependsOn startAndWaitOnHealthyContainer
-    finalizedBy stopContainer
+    finalizedBy removeContainer
 }
