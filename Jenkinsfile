@@ -62,7 +62,7 @@ pipeline {
                 timeout(time: 1, unit:'DAYS') {
                     input 'Deploy to Production?'
                 }
-                sshagent(credentials : ['DOCKER_SWARM_MANAGER_PASSWORD']) {
+                sshagent(credentials: ['DOCKER_SWARM_MANAGER_CREDENTIALS']) {
                     sh "ssh ${env.DOCKER_SWARM_MANAGER_USERNAME}@${env.DOCKER_SWARM_MANAGER_IP} docker service update --image bmuschko/todo-web-service:latest todo-web-service"
                 }
             }
