@@ -63,7 +63,7 @@ pipeline {
                     input 'Deploy to Production?'
                 }
                 sshagent(credentials: ['a859c8cc-c193-4b4b-8c27-fece25911eca']) {
-                    sh "ssh ${env.DOCKER_SWARM_MANAGER_USERNAME}@${env.DOCKER_SWARM_MANAGER_IP} docker service update --image bmuschko/todo-web-service:latest todo-web-service"
+                    sh "ssh -o StrictHostKeyChecking=no ${env.DOCKER_SWARM_MANAGER_USERNAME}@${env.DOCKER_SWARM_MANAGER_IP} docker service update --image bmuschko/todo-web-service:latest todo-web-service"
                 }
             }
         }
