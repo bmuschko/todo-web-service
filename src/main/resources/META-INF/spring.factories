@@ -1,0 +1,1 @@
+org.springframework.boot.env.EnvironmentPostProcessor=com.bmuschko.todo.webservice.env.DockerSecretsDatabasePasswordProcessor
