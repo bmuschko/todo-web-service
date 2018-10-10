@@ -1,6 +1,6 @@
 = ToDo web service
 
-A RESTful web service to managing ToDo items. ToDo items are stored in a database. The underlying implementation is based on Spring Boot built by Gradle. The provided `Jenkinsfile` defines a build pipeline definition for creating and pushing a Docker image of the application.
+A RESTful web service to managing ToDo items. ToDo items are stored in a database. The underlying implementation is based on Spring Boot built by Gradle. The provided `Jenkinsfile` defines a build pipeline definition for creating, pushing and deploying a Docker image of the application.
 
 == Running the service locally
 
