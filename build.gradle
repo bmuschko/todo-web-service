@@ -6,7 +6,7 @@ buildscript {
    dependencies {
        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.0.5.RELEASE'
        classpath 'io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE'
-       classpath 'com.bmuschko:gradle-docker-plugin:3.6.2'
+       classpath 'com.bmuschko:gradle-docker-plugin:4.0.0'
    }
 }
 
@@ -47,7 +47,7 @@ docker {
         email = dockerEmail
     }
     springBootApplication {
-        tag = "$dockerUsername/todo-web-service"
+        tag = "$dockerUsername/todo-web-service".toString()
     }
 }
 
@@ -66,24 +66,24 @@ import com.bmuschko.gradle.docker.tasks.container.extras.DockerWaitHealthyContai
 
 task createContainer(type: DockerCreateContainer) {
     dependsOn dockerBuildImage
-    targetImageId { dockerBuildImage.getImageId() }
+    targetImageId dockerBuildImage.imageId
     portBindings = ['8080:8080']
     autoRemove = true
 }
 
 task startContainer(type: DockerStartContainer) {
     dependsOn createContainer
-    targetContainerId { createContainer.getContainerId() }
+    targetContainerId createContainer.containerId
 }
 
 task startAndWaitOnHealthyContainer(type: DockerWaitHealthyContainer) {
     dependsOn startContainer
     timeout = 60
-    targetContainerId { createContainer.getContainerId() }
+    targetContainerId createContainer.containerId
 }
 
 task stopContainer(type: DockerStopContainer) {
-    targetContainerId { createContainer.getContainerId() }
+    targetContainerId createContainer.containerId
 }
 
 functionalTest {
