@@ -59,7 +59,7 @@ pipeline {
         }
         stage('Deploy to Production') {
             steps {
-                timeout(time: 1, unit:'DAYS') {
+                timeout(time: 1, unit: 'DAYS') {
                     input 'Deploy to Production?'
                 }
                 sshagent(credentials: ['ee8346e0-a000-4496-88aa-49977fd97154']) {
