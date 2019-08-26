@@ -12,11 +12,17 @@ task functionalTest(type: Test) {
     group = 'verification'
     testClassesDirs = sourceSets.functionalTest.output.classesDirs
     classpath = sourceSets.functionalTest.runtimeClasspath
+    dependsOn assemble
     mustRunAfter test
+    systemProperty 'distribution.dir', bootJar.destinationDirectory.get().asFile.absolutePath
+    systemProperty 'archive.name', bootJar.archiveFileName.get()
 }
 
 check.dependsOn functionalTest
 
 dependencies {
     functionalTestImplementation 'com.squareup.okhttp3:okhttp:3.11.0'
+    def testcontainersVersion = '1.12.0'
+    functionalTestImplementation "org.testcontainers:junit-jupiter:$testcontainersVersion"
+    functionalTestImplementation "org.testcontainers:postgresql:$testcontainersVersion"
 }

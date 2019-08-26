@@ -5,10 +5,9 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
 }
 
-configurations.all {
-    exclude group: 'junit', module: 'junit'
-}
-
 tasks.withType(Test) {
     useJUnitPlatform()
+    testLogging {
+        showStandardStreams = true
+    }
 }

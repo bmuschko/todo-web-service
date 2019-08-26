@@ -1,26 +1,17 @@
-buildscript {
-   repositories {
-       gradlePluginPortal()
-   }
-
-   dependencies {
-       classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.0.6.RELEASE'
-       classpath 'io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE'
-       classpath 'com.bmuschko:gradle-docker-plugin:4.0.1'
-   }
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.1.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+    id 'com.google.cloud.tools.jib' version '1.5.0'
 }
-
-apply plugin: 'java'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'com.bmuschko.docker-spring-boot-application'
-apply from: 'gradle/test-setup.gradle'
-apply from: 'gradle/integration-test.gradle'
-apply from: 'gradle/functional-test.gradle'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 version = '1.0'
+
+apply from: 'gradle/test-setup.gradle'
+apply from: 'gradle/integration-test.gradle'
+apply from: 'gradle/functional-test.gradle'
 
 repositories {
     jcenter()
@@ -34,59 +25,4 @@ dependencies {
     runtime 'org.postgresql:postgresql:42.2.5'
 }
 
-ext {
-    dockerUsername = getConfigurationProperty('DOCKER_USERNAME', 'dockerHubUsername')
-    dockerPassword = getConfigurationProperty('DOCKER_PASSWORD', 'dockerHubPassword')
-    dockerEmail = getConfigurationProperty('DOCKER_EMAIL', 'dockerHubEmail')
-}
-
-docker {
-    registryCredentials {
-        username = dockerUsername
-        password = dockerPassword
-        email = dockerEmail
-    }
-    springBootApplication {
-        tag = "$dockerUsername/todo-web-service".toString()
-    }
-}
-
-String getConfigurationProperty(String envVar, String sysProp) {
-    System.getenv(envVar) ?: project.findProperty(sysProp)
-}
-
-dockerCreateDockerfile {
-    instruction 'HEALTHCHECK CMD wget --quiet --tries=1 --spider http://localhost:8080/actuator/health || exit 1'
-}
-
-import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
-import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
-import com.bmuschko.gradle.docker.tasks.container.DockerStopContainer
-import com.bmuschko.gradle.docker.tasks.container.extras.DockerWaitHealthyContainer
-
-task createContainer(type: DockerCreateContainer) {
-    dependsOn dockerBuildImage
-    targetImageId dockerBuildImage.imageId
-    portBindings = ['8080:8080']
-    autoRemove = true
-}
-
-task startContainer(type: DockerStartContainer) {
-    dependsOn createContainer
-    targetContainerId createContainer.containerId
-}
-
-task startAndWaitOnHealthyContainer(type: DockerWaitHealthyContainer) {
-    dependsOn startContainer
-    timeout = 60
-    targetContainerId createContainer.containerId
-}
-
-task stopContainer(type: DockerStopContainer) {
-    targetContainerId createContainer.containerId
-}
-
-functionalTest {
-    dependsOn startAndWaitOnHealthyContainer
-    finalizedBy stopContainer
-}
+jib.to.image = "bmuschko/todo-web-service:$version"
