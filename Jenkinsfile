@@ -26,11 +26,6 @@ pipeline {
                 }
             }
         }
-        stage('Build & Push Image') {
-            steps {
-                gradlew('jib')
-            }
-        }
         stage('Functional Tests') {
             steps {
                 gradlew('functionalTest')
@@ -39,6 +34,11 @@ pipeline {
                 always {
                     junit '**/build/test-results/functionalTest/TEST-*.xml'
                 }
+            }
+        }
+        stage('Build & Push Image') {
+            steps {
+                gradlew('jib')
             }
         }
     }
